@@ -1,15 +1,23 @@
 
 
 public class Movie {
-    public String movieId ;
-    public String title ;
-    public int duration ;
+    private String movieId ;
+    private String title ;
+    private int duration ;
     
     public Movie(String movieId, String title , int duration){
         this.movieId = movieId;
         this.title = title;
         this.duration = duration;
     }
+
+    String getMovieId(){
+        return movieId;
+    }
+    String title(){
+        return 
+    }
+    
     @Override
     public String toString() {
         // TODO Auto-generated method stub
