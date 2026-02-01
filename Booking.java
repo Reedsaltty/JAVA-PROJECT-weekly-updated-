@@ -4,39 +4,35 @@ public class Booking {
     private ShowTime showTime;
     
     public Booking(String bookingId, Seat yourSeat, ShowTime showTime){
-        this.showTime = showTime;
-        getYourId(bookingId);
-        getYourSeatId(yourSeat);
+        setBookingId(bookingId);
+        setYourSeatId(yourSeat);
+        setShowTime(showTime);
     }
 
-
-
-    public String getYourId(String bookingId){
-        this.bookingId = bookingId;
-        System.out.println("Booking Id : " + bookingId);
-        return bookingId;
-    }
-
-    public Seat getYourSeatId(Seat showTime){
-        this.yourSeat = yourSeat;
-        System.out.println("Seat : " + Seat.seatNumber);
-        return yourSeat ;
-    }
-
-    public ShowTime getShowTime() {
-        return showTime;
-    }
-
-    public void setShowTime(ShowTime showTime) {
-        this.showTime = showTime;
-    }
 
     public String getBookingId() {
         return bookingId;
     }
 
-    public Seat getYourSeat() {
+    public Seat getYourSeatId() {
         return yourSeat;
     }
+    public ShowTime getShowTime() {
+        return showTime;
+    }
+
+    public void setBookingId(String bookingId){
+        this.bookingId = bookingId;
+    }
+
+    public void setYourSeatId(Seat yourSeat){
+        this.yourSeat = yourSeat;
+    }
+
+
+    public void setShowTime(ShowTime showTime) {
+        this.showTime = showTime;
+    }
+
 
 }

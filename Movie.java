@@ -8,7 +8,7 @@ public class Movie {
     public Movie(String movieId, String title , int duration){
         setMovieId(movieId);
         setTitle(title);
-        getDuration(duration);
+        setDuration(duration);
     }
 
     public String getMovieId(){
