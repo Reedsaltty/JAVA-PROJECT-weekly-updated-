@@ -1,7 +1,7 @@
 public class Booking {
     private String bookingId ;
     private Seat yourSeat;
-    public ShowTime showTime;
+    private ShowTime showTime;
     
     public Booking(String bookingId, Seat yourSeat, ShowTime showTime){
         this.showTime = showTime;
@@ -23,6 +23,20 @@ public class Booking {
         return yourSeat ;
     }
 
-    
+    public ShowTime getShowTime() {
+        return showTime;
+    }
+
+    public void setShowTime(ShowTime showTime) {
+        this.showTime = showTime;
+    }
+
+    public String getBookingId() {
+        return bookingId;
+    }
+
+    public Seat getYourSeat() {
+        return yourSeat;
+    }
 
 }

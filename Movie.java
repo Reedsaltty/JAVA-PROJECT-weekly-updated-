@@ -11,23 +11,28 @@ public class Movie {
         getDuration(duration);
     }
 
-    String getMovieId(){
+    public String getMovieId(){
         return movieId;
     }
-    String title(){
+    
+    public String getTitle(){
         return title;
     }
-    int getDuration(){
+    
+    public int getDuration(){
         return duration;
     }
-    String setMovieId(String movieId){
-        return this.movieId = movieId;
+    
+    public void setMovieId(String movieId){
+        this.movieId = movieId;
     }
-    String setTitle( String title){
-        return this.title = title;
+    
+    public void setTitle(String title){
+        this.title = title;
     }
-    int getDuration(int dur){
-        return this.duration = dur;
+    
+    public void setDuration(int duration){
+        this.duration = duration;
     }
     
     @Override
