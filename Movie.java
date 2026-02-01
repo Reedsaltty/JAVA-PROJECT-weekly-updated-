@@ -6,16 +6,28 @@ public class Movie {
     private int duration ;
     
     public Movie(String movieId, String title , int duration){
-        this.movieId = movieId;
-        this.title = title;
-        this.duration = duration;
+        setMovieId(movieId);
+        setTitle(title);
+        getDuration(duration);
     }
 
     String getMovieId(){
         return movieId;
     }
     String title(){
-        return 
+        return title;
+    }
+    int getDuration(){
+        return duration;
+    }
+    String setMovieId(String movieId){
+        return this.movieId = movieId;
+    }
+    String setTitle( String title){
+        return this.title = title;
+    }
+    int getDuration(int dur){
+        return this.duration = dur;
     }
     
     @Override
