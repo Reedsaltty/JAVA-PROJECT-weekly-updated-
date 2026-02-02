@@ -5,8 +5,8 @@ public class Screen {
     private ArrayList<Seat> seats;
 
     public Screen(String screenId , ArrayList<Seat> seats){
-        this.screenId = screenId;
-        this.seats = seats;
+        setScreenId(screenId);
+        setSeats(seats);
     }
 
     public String getScreenId() {

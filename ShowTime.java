@@ -5,9 +5,9 @@ public class ShowTime {
     private Movie movie;
 
     public ShowTime(String showTimeId, String dateTime, Movie movie ){
-        this.showTimeId = showTimeId;
-        this.dateTime = dateTime;
-        this.movie = movie ;
+        setDateTime(dateTime);
+        setShowTimeId(showTimeId);
+        setMovie(movie);
     }
 
     public String getShowTimeId() {
