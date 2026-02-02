@@ -4,8 +4,8 @@ public class Seat {
     private boolean isAvailable;
 
     public Seat(int seatNumber, boolean isAvailable){
-        Seat.seatNumber = seatNumber;
-        this.isAvailable = isAvailable;
+       setSeatNumber(seatNumber);
+       setAvailable(isAvailable);
     }
 
     public static int getSeatNumber() {
