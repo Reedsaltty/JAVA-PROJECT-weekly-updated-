@@ -9,6 +9,7 @@ public class Movie {
         setMovieId(movieId);
         setTitle(title);
         setDuration(duration);
+        // gay
     }
 
     public String getMovieId(){
