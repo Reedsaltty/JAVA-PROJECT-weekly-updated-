@@ -17,9 +17,9 @@ public class Booking {
         return bookingId;
     }
 
-    public Seat getYourSeatId(Seat showTime){
+    public Seat getYourSeatId(Seat yourSeat){
         this.yourSeat = yourSeat;
-        System.out.println("Seat : " + Seat.seatNumber);
+        System.out.println("Seat : " + yourSeat.getSeatNumber());
         return yourSeat ;
     }
 
