@@ -32,5 +32,5 @@ public class ShowTime {
 
     public void setMovie(Movie movie) {
         this.movie = movie;
-    }
+    } 
 }
