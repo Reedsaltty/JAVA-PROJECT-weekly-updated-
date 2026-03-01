@@ -1,21 +1,14 @@
+import interface_abstract.Displayable;
+import interface_abstract.Entity;
 
-public class ShowTime {
-    private String showTimeId ;
+public class ShowTime extends Entity implements Displayable {
     private String dateTime ;
     private Movie movie;
 
     public ShowTime(String showTimeId, String dateTime, Movie movie ){
+        super(showTimeId);
         setDateTime(dateTime);
-        setShowTimeId(showTimeId);
         setMovie(movie);
-    }
-
-    public String getShowTimeId() {
-        return showTimeId;
-    }
-
-    public void setShowTimeId(String showTimeId) {
-        this.showTimeId = showTimeId;
     }
 
     public String getDateTime() {
@@ -32,5 +25,12 @@ public class ShowTime {
 
     public void setMovie(Movie movie) {
         this.movie = movie;
+    }
+
+    @Override
+    public String displayInfo() {
+        // TODO Auto-generated method stub
+        return null;
     } 
+    
 }

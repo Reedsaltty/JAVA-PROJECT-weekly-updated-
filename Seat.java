@@ -1,6 +1,7 @@
+import interface_abstract.Bookable;
 
-public class Seat {
-    private static int seatNumber;
+public class Seat implements Bookable{
+    private  int seatNumber;
     private boolean isAvailable;
 
     public Seat(int seatNumber, boolean isAvailable){
@@ -8,12 +9,12 @@ public class Seat {
        setAvailable(isAvailable);
     }
 
-    public static int getSeatNumber() {
+    public  int getSeatNumber() {
         return seatNumber;
     }
 
-    public static void setSeatNumber(int seatNumber) {
-        Seat.seatNumber = seatNumber;
+    public void setSeatNumber(int seatNumber) {
+        this.seatNumber = seatNumber;
     }
 
     public boolean isAvailable() {
@@ -23,4 +24,24 @@ public class Seat {
     public void setAvailable(boolean isAvailable) {
         this.isAvailable = isAvailable;
     }
+
+    @Override
+    public boolean book() {
+        // TODO Auto-generated method stub
+        if (isAvailable){
+            isAvailable = false;
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean cancel() {
+        // TODO Auto-generated method stub
+        if (book()){
+            return true;
+        }
+        return false ;
+    }
+    
 }

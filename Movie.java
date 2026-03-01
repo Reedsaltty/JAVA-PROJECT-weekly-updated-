@@ -1,21 +1,19 @@
 
+import interface_abstract.Displayable;
+import interface_abstract.Entity;
 
-public class Movie {
-    private String movieId ;
+public class Movie extends Entity implements Displayable   {
     private String title ;
     private int duration ;
     
     public Movie(String movieId, String title , int duration){
-        setMovieId(movieId);
+        super(movieId);
         setTitle(title);
         setDuration(duration);
-        // gay
+
     }
 
-    public String getMovieId(){
-        return movieId;
-    }
-    
+
     public String getTitle(){
         return title;
     }
@@ -23,11 +21,7 @@ public class Movie {
     public int getDuration(){
         return duration;
     }
-    
-    public void setMovieId(String movieId){
-        this.movieId = movieId;
-    }
-    
+        
     public void setTitle(String title){
         this.title = title;
     }
@@ -37,10 +31,10 @@ public class Movie {
     }
     
     @Override
-    public String toString() {
+    public String displayInfo() {
         // TODO Auto-generated method stub
-        
-        return ("[ Movie Id : " + movieId + ", Movie title : "+ title +"Movie dur: "+ duration +"]");
+        return ("[ Movie Id : " + getId() + ", Movie title : "+ title +"Movie dur: "+ duration +"]");
     }
+
 
 }

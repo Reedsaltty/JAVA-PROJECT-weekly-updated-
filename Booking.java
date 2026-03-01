@@ -1,16 +1,13 @@
-public class Booking {
-    private String bookingId ;
+import interface_abstract.Entity;
+
+public class Booking extends Entity {
     private Seat yourSeat;
     private ShowTime showTime;
     
     public Booking(String bookingId, Seat yourSeat, ShowTime showTime){
-        setBookingId(bookingId);
+        super(bookingId);
         setYourSeatId(yourSeat);
         setShowTime(showTime);
-    }
-
-    public String getBookingId() {
-        return bookingId;
     }
 
     public Seat getYourSeat() {
@@ -19,10 +16,6 @@ public class Booking {
 
     public ShowTime getShowTime() {
         return showTime;
-    }
-
-    public void setBookingId(String bookingId){
-        this.bookingId = bookingId;
     }
 
     public void setYourSeatId(Seat yourSeat){
