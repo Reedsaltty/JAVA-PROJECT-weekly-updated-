@@ -1,4 +1,8 @@
-import interface_abstract.Entity;
+package com.example.models;
+
+import com.example.interface_abstract.Entity;
+import com.example.models.Seat;
+import com.example.models.ShowTime;
 
 public class Booking extends Entity {
     private Seat yourSeat;

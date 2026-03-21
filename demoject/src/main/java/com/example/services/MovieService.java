@@ -1,5 +1,6 @@
 package com.example.services;
 
+import com.example.interface_abstract.Displayable;
 import com.example.models.Movie;
 import java.util.ArrayList;
 
@@ -15,7 +16,7 @@ public class MovieService {
         movies.add(movie);
     }
     public ArrayList<Movie> getAllMovies() {
-        return movies;
+        return movies ;
     }
     public Movie findMovieById(String movieId){
         for(Movie m : movies){
@@ -37,6 +38,14 @@ public class MovieService {
     }
      public void deleteMovie(String movieId) {
         movies.removeIf(m -> m.getMovieId().equals(movieId));
+    }
+    public void displayAllMovies(){
+        if (movies.isEmpty()){
+            System.out.println("No movie available");
+        }
+        for(Movie movie : movies ){
+            System.out.println(movie.displayInfo());
+        }
     }
 
 

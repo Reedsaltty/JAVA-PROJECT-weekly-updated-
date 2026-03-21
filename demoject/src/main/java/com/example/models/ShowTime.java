@@ -1,5 +1,6 @@
-import interface_abstract.Displayable;
-import interface_abstract.Entity;
+package com.example.models;
+import com.example.interface_abstract.Displayable;
+import com.example.interface_abstract.Entity;
 
 public class ShowTime extends Entity implements Displayable {
     private String dateTime ;

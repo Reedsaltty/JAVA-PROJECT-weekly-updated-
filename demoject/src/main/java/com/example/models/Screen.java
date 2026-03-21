@@ -1,8 +1,10 @@
+package com.example.models;
 
 import java.util.ArrayList;
 
-import interface_abstract.Displayable;
-import interface_abstract.Entity;
+import com.example.interface_abstract.Displayable;
+import com.example.interface_abstract.Entity;
+import com.example.models.Seat;
 public class Screen extends Entity implements Displayable{
     private ArrayList<Seat> seats;
 

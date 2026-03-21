@@ -1,4 +1,5 @@
-import interface_abstract.Bookable;
+package com.example.models;
+import com.example.interface_abstract.Bookable;
 
 public class Seat implements Bookable{
     private  int seatNumber;
