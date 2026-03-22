@@ -1,6 +1,6 @@
 package com.example.services;
 
-import com.example.interface_abstract.Displayable;
+
 import com.example.models.Movie;
 import java.util.ArrayList;
 

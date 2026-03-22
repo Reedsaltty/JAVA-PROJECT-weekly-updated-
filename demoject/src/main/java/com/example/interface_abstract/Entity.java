@@ -3,8 +3,8 @@ package com.example.interface_abstract;
 public abstract class Entity {
     protected String id;
     
-    public Entity(String id) {
-        setId(id);
+    public Entity(String seatId) {
+        setId(seatId);
     }
     
     public String getId() {
@@ -15,8 +15,5 @@ public abstract class Entity {
         this.id = id;
     }
 
-    public String displayInfo() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'displayInfo'");
-    }
+    
 }

@@ -1,33 +1,30 @@
 package com.example.models;
 
 import com.example.interface_abstract.Entity;
-import com.example.models.Seat;
-import com.example.models.ShowTime;
 
-public class Booking extends Entity {
-    private Seat yourSeat;
-    private ShowTime showTime;
-    
-    public Booking(String bookingId, Seat yourSeat, ShowTime showTime){
+
+public class Booking extends Entity  {
+
+    private int seatId;          
+    private String showTimeId;  
+
+    public Booking(String bookingId, int seatId, String showTimeId) {
         super(bookingId);
-        setYourSeatId(yourSeat);
-        setShowTime(showTime);
+        this.seatId     = seatId;
+        this.showTimeId = showTimeId;
+    }
+    
+
+    public int getSeatId() {
+        return seatId;
     }
 
-    public Seat getYourSeat() {
-        return yourSeat;
+    public String getShowTime() {
+        return showTimeId;
     }
 
-    public ShowTime getShowTime() {
-        return showTime;
-    }
+    
 
-    public void setYourSeatId(Seat yourSeat){
-        this.yourSeat = yourSeat;
-    }
-
-    public void setShowTime(ShowTime showTime) {
-        this.showTime = showTime;
-    }
-
+   
+    
 }

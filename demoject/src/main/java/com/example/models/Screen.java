@@ -1,36 +1,24 @@
 package com.example.models;
 
-import java.util.ArrayList;
 
-import com.example.interface_abstract.Displayable;
 import com.example.interface_abstract.Entity;
-import com.example.models.Seat;
-public class Screen extends Entity implements Displayable{
-    private ArrayList<Seat> seats;
 
-    public Screen(String screenId , int numberOfSeat){
+public class Screen extends Entity  {
+
+    private int numberOfSeats;
+
+    public Screen(String screenId, int numberOfSeats) {
         super(screenId);
-        setSeats(numberOfSeat);
+        this.numberOfSeats = numberOfSeats;
     }
 
-    public ArrayList<Seat> getSeats() {
-        return seats;
+
+    public int getNumberOfSeats() {
+        return numberOfSeats;
     }
 
-    public void setSeats(int numberOfSeat) {
-        this.seats = new ArrayList<>();
-        for (int i = 1; i <= 250 ; i++) {
-        Seat newSeat = new Seat(i, true);
-        this.seats.add(newSeat);
-        System.out.println( "Seat : " + i + " Available: " + newSeat.isAvailable());     // Create seats numbered 1 to numberOfSeats, all available
-    }
+    public void setNumberOfSeats(int numberOfSeats) {
+        this.numberOfSeats = numberOfSeats;
     }
 
-    @Override
-    public String displayInfo() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    
 }

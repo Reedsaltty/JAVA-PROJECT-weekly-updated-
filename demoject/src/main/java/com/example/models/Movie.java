@@ -1,11 +1,7 @@
 package com.example.models;
-
-import java.util.ArrayList;
-
-import com.example.interface_abstract.Displayable;
 import com.example.interface_abstract.Entity;
 
-public class Movie extends Entity implements Displayable   {
+public class Movie extends Entity   {
     private String title ;
     private int duration ;
     private String genre ;
@@ -14,7 +10,7 @@ public class Movie extends Entity implements Displayable   {
         super(movieId);
         setTitle(title);
         setDuration(duration);
-        setGenre(title);
+        setGenre(genre);
 
     }
     public String getMovieId(){
@@ -41,7 +37,7 @@ public class Movie extends Entity implements Displayable   {
     public void setGenre(String genre) {
     this.genre = genre;
     }
-    @Override
+
     public String displayInfo() {
         // TODO Auto-generated method stub
         return ("[ Movie Id : " + getId() + ", Movie title : " + title + ", Movie duration: " + duration + ", Genre: " + genre + "]");

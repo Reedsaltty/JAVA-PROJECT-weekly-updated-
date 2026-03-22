@@ -1,19 +1,24 @@
 package com.example.models;
-import com.example.interface_abstract.Displayable;
 import com.example.interface_abstract.Entity;
 
-public class ShowTime extends Entity implements Displayable {
+public class ShowTime extends Entity  {
     private String dateTime ;
     private Movie movie;
+    private Screen screen; 
 
-    public ShowTime(String showTimeId, String dateTime, Movie movie ){
+    public ShowTime(String showTimeId, String dateTime, Movie movie, Screen screen ){
         super(showTimeId);
         setDateTime(dateTime);
         setMovie(movie);
+        this.screen = screen ;
+
     }
 
     public String getDateTime() {
         return dateTime;
+    }
+    public Screen getScreen(){
+        return screen;
     }
 
     public void setDateTime(String dateTime) {
@@ -28,7 +33,8 @@ public class ShowTime extends Entity implements Displayable {
         this.movie = movie;
     }
 
-    @Override
+
+
     public String displayInfo() {
         // TODO Auto-generated method stub
         return null;
