@@ -29,10 +29,10 @@ public class SeatService {
     public boolean reserveSeat(int seatNumber) {
         Seat seat = findByNumber(seatNumber);
         if (seat == null){
-            throw new IllegalAccessError("Seat not found: " + seatNumber);}
+            throw new IllegalArgumentException("Seat not found: " + seatNumber);}
             
         if (!seat.isAvailable()){
-             throw new IllegalAccessError(
+             throw new IllegalArgumentException(
                 "Seat #" + seat.getSeatNumber() + " is already booked.");
         }
         seat.setAvailable(false);   // the actual state change
@@ -44,7 +44,7 @@ public class SeatService {
     public boolean releaseSeat(int seatNumber) {
         Seat seat = findByNumber(seatNumber);
         if (seat == null)
-            throw new IllegalAccessError("Seat not found: " + seatNumber);
+            throw new IllegalArgumentException("Seat not found: " + seatNumber);
         if (seat.isAvailable())
             return false;           // wasn't booked — nothing to cancel
 

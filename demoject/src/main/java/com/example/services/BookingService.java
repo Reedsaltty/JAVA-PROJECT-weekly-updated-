@@ -35,15 +35,15 @@ public class BookingService {
     public Booking createBooking(String bookingId, String showTimeId, int seatNumber) {
         ShowTime showTime = showTimeService.findById(showTimeId);
         if (showTime == null) {
-            throw new IllegalAccessError("ShowTime not found: " + showTimeId);
+            throw new IllegalArgumentException("ShowTime not found: " + showTimeId);
         }
 
         Seat seat = seatService.findByNumber(seatNumber);
         if (seat == null) {
-            throw new IllegalAccessError("Seat not found: " + seatNumber);
+            throw new IllegalArgumentException("Seat not found: " + seatNumber);
         }
         if (!seat.isAvailable()) {
-            throw new IllegalAccessError("Seat #" + seat.getSeatNumber() + " is already booked.");
+            throw new IllegalArgumentException("Seat #" + seat.getSeatNumber() + " is already booked.");
         }
         seatService.reserveSeat(seatNumber);
         Booking booking = new Booking(bookingId, seatNumber, showTimeId);
@@ -56,7 +56,7 @@ public class BookingService {
     public boolean cancelBooking(String bookingId) {
         Booking booking = findByNumber(bookingId);
         if (booking == null) {
-            throw new IllegalAccessError("Booking not found: " + bookingId);
+            throw new IllegalArgumentException("Booking not found: " + bookingId);
         }
         seatService.releaseSeat(booking.getSeatId());
         books.removeIf(b -> b.getId().equals(bookingId));
@@ -72,7 +72,7 @@ public class BookingService {
     public String getBookingDetails(String bookingId) {
         Booking booking = findByNumber(bookingId);
         if (booking == null)
-            throw new IllegalAccessError("Booking not found: " + bookingId);
+            throw new IllegalArgumentException("Booking not found: " + bookingId);
 
         // look up full objects using the IDs stored in Booking
         Seat seat = seatService.findByNumber(booking.getSeatId());
