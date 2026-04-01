@@ -56,14 +56,14 @@ public class MovieTheaterApp
 
         // ── Test 4: cancel and rebook ──────────────
         System.out.println("\n── Cancel then Rebook ───");
-        bookingService.cancelBooking("BK001");
+        // bookingService.cancelBooking("BK001");
         try {
             Booking b = bookingService.createBooking("BK003", "ST001", 1);
             System.out.println(bookingService.getBookingDetails("BK003"));
         } catch (IllegalStateException e) {
             System.out.println("Failed: " + e.getMessage());}
         
-        seatService.listAllAvailSeats("SCR001");
+        // seatService.listAllAvailSeats("SCR001");
 
        
     }

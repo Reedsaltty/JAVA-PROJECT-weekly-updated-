@@ -15,7 +15,7 @@ public class BookingService {
     private SeatService seatService;
     private ShowTimeService showTimeService;
 
-    public Booking findByNumber(String bookingId) {
+    public Booking findByBookingId(String bookingId) {
         for (Booking b : books) {
             if (b.getId().equals(bookingId)) {
                 return b;
@@ -37,13 +37,16 @@ public class BookingService {
         if (showTime == null) {
             throw new IllegalAccessError("ShowTime not found: " + showTimeId);
         }
-
+        Booking book = findByBookingId(bookingId);
+        if(book != null){
+            throw new IllegalArgumentException("Booking already exists: " + bookingId);
+        }
         Seat seat = seatService.findByNumber(seatNumber);
         if (seat == null) {
             throw new IllegalAccessError("Seat not found: " + seatNumber);
         }
         if (!seat.isAvailable()) {
-            throw new IllegalAccessError("Seat #" + seat.getSeatNumber() + " is already booked.");
+            throw new IllegalArgumentException("Seat #" + seat.getSeatNumber() + " is already booked.");
         }
         seatService.reserveSeat(seatNumber);
         Booking booking = new Booking(bookingId, seatNumber, showTimeId);
@@ -54,7 +57,7 @@ public class BookingService {
     }
 
     public boolean cancelBooking(String bookingId) {
-        Booking booking = findByNumber(bookingId);
+        Booking booking = findByBookingId(bookingId);
         if (booking == null) {
             throw new IllegalAccessError("Booking not found: " + bookingId);
         }
@@ -70,7 +73,7 @@ public class BookingService {
 
     // BookingService.java — add this method
     public String getBookingDetails(String bookingId) {
-        Booking booking = findByNumber(bookingId);
+        Booking booking = findByBookingId(bookingId);
         if (booking == null)
             throw new IllegalAccessError("Booking not found: " + bookingId);
 
@@ -84,5 +87,6 @@ public class BookingService {
                 + " | Screen : " + showTime.getScreen().getId()
                 + " | Time : " + showTime.getDateTime();
     }
+     
 
 }

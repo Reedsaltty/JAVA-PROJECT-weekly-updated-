@@ -6,6 +6,11 @@ public class Movie extends Entity   {
     private int duration ;
     private String genre ;
     
+
+    public Movie(String id, String title, int duration) {
+    this(id, title, duration, "Unknown"); // Default genre
+    }
+    
     public Movie(String movieId, String title , int duration, String genre){
         super(movieId);
         setTitle(title);

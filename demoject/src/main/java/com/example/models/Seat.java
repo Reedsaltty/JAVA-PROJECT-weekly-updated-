@@ -7,6 +7,10 @@ public class Seat {   // no longer implements Bookable
     private int seatNumber;
     private boolean isAvailable;
 
+    public Seat(String screenId, int seatNumber) {
+    this(screenId, seatNumber, true); // Defaults to 'true'
+    }
+    
     public Seat( String screenId, int seatNumber, boolean isAvailable) {
         this.screenId    = screenId;
         this.seatNumber  = seatNumber;
