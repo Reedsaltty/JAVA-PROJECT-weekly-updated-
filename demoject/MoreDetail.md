@@ -1,0 +1,4 @@
+Refactor Services: Use an abstract BaseService to handle the findByBookingId and findById logic for all your services. This will significantly reduce code duplication.
+Precise Seat Lookup: Update SeatService with an overloaded findByNumber(String screenId, int seatNumber) method to ensure you're always booking the correct seat on the correct screen.
+Displayable Interface: Implement a standard interface for models to display their information.
+Exception Handling: I recommend switching the IllegalAccessError calls back to IllegalArgumentException (or a custom exception) to follow Java best practices for application-level validation.(use custom exeption);
