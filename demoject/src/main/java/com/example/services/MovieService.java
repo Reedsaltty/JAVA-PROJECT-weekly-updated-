@@ -1,45 +1,40 @@
 package com.example.services;
 
-
 import com.example.models.Movie;
-import java.util.ArrayList;
+import com.example.exceptions.ResourceNotFoundException;
+import java.util.List;
 
-
-
-
-
-public class MovieService {
-    // getAllMovies(), addMovie(), updateMovie(), deleteMovie(). Annotated @Service. Calls MovieRepository.
-    private ArrayList<Movie> movies = new ArrayList<>(); 
-
-    public void addMovie(Movie movie){
-        movies.add(movie);
-    }
-    public ArrayList<Movie> getAllMovies() {
-        return movies ;
-    }
-    public Movie findMovieById(String movieId){
-        for(Movie m : movies){
-            if (m.getId().equals(movieId)) {
-                return m;
-            }
-        }
-        return null;
-        
-    };
-    public void updateMovie(String movieid, String title ,int duration , String genre ){
-        Movie movieToUpdate =findMovieById(movieid);
-        if (movieToUpdate != null){
-            movieToUpdate.setTitle(title);
-            movieToUpdate.setDuration(duration);
-            movieToUpdate.setGenre(genre);
-        }
+public class MovieService extends BaseService<Movie> {
     
+    public void addMovie(Movie movie){
+        add(movie);
     }
-     public void deleteMovie(String movieId) {
-        movies.removeIf(m -> m.getMovieId().equals(movieId));
+
+    public List<Movie> getAllMovies() {
+        return getAll();
     }
+
+    public Movie findMovieById(String movieId){
+        Movie movie = findById(movieId);
+        if (movie == null) {
+            throw new ResourceNotFoundException("Movie not found: " + movieId);
+        }
+        return movie;
+    }
+
+    public void updateMovie(String movieid, String title, int duration, String genre) {
+        Movie movieToUpdate = findMovieById(movieid);
+        movieToUpdate.setTitle(title);
+        movieToUpdate.setDuration(duration);
+        movieToUpdate.setGenre(genre);
+    }
+
+    public void deleteMovie(String movieId) {
+        remove(movieId);
+    }
+
     public void displayAllMovies(){
+        List<Movie> movies = getAll();
         if (movies.isEmpty()){
             System.out.println("No movie available");
         }
@@ -47,8 +42,4 @@ public class MovieService {
             System.out.println(movie.displayInfo());
         }
     }
-
-
 }
-
-

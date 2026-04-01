@@ -2,86 +2,54 @@ package com.example.services;
 
 import com.example.models.Seat;
 import com.example.models.Screen;
+import com.example.exceptions.ResourceNotFoundException;
+import com.example.exceptions.ValidationException;
+import java.util.List;
 import java.util.ArrayList;
-import java.util.function.Predicate;
 
-
-public class SeatService {
-
-    private ArrayList<Seat> allSeats = new ArrayList<>();
-
-    // ── Called by ScreenService when a screen is added ──────────
+public class SeatService extends BaseService<Seat> {
 
     public void initializeSeats(Screen screen) {
         for (int i = 1; i <= screen.getNumberOfSeats(); i++) {
-            allSeats.add(new Seat(
-                screen.getId(),
-                i,
-                true
-            ));
+            add(new Seat(screen.getId(), i));
         }
         System.out.println("Initialized " + screen.getNumberOfSeats()
             + " seats for screen " + screen.getId());
     }
 
-    // ── Moved from Seat.book() ───────────────────────────────────
-
-    public boolean reserveSeat(int seatNumber) {
-        Seat seat = findByNumber(seatNumber);
-        if (seat == null){
-            throw new IllegalAccessError("Seat not found: " + seatNumber);}
-            
-        if (!seat.isAvailable()){
-             throw new IllegalAccessError(
-                "Seat #" + seat.getSeatNumber() + " is already booked.");
+    public List<Seat> getAvailableSeats(String screenId) {
+        List<Seat> result = new ArrayList<>();
+        for (Seat s : entities) {
+            if (s.getScreenId().equals(screenId) && s.isAvailable()) {
+                result.add(s);
+            }
         }
-        seat.setAvailable(false);   // the actual state change
-        return true;
-    }
-
-    // ── Moved from Seat.cancel() ─────────────────────────────────
-
-    public boolean releaseSeat(int seatNumber) {
-        Seat seat = findByNumber(seatNumber);
-        if (seat == null)
-            throw new IllegalAccessError("Seat not found: " + seatNumber);
-        if (seat.isAvailable())
-            return false;           // wasn't booked — nothing to cancel
-
-        seat.setAvailable(true);    // release it
-        return true;
-    }
-
-    // ── Predicate-based filter (uses your Filter.java pattern) ───
-
-    public ArrayList<Seat> getSeatsBy(Predicate<Seat> condition) {
-        ArrayList<Seat> result = new ArrayList<>();
-        for (Seat s : allSeats)
-            if (condition.test(s)) result.add(s);
         return result;
     }
 
-    // Convenience methods that use the predicate above
-    public ArrayList<Seat> getAvailableSeats(String screenId) {
-        return getSeatsBy(s -> s.getScreenId().equals(screenId) && s.isAvailable());
-    }
-    public void listAllAvailSeats(String screenId){
-        ArrayList<Seat> avaiSeat = getAvailableSeats(screenId);
-        for(Seat a : avaiSeat){
-            System.out.println(a.toString() );
+    public Seat findByNumber(String screenId, int seatNumber) {
+        String idSlug = screenId + "-" + seatNumber;
+        Seat seat = findById(idSlug);
+        if (seat == null) {
+             throw new ResourceNotFoundException("Seat #" + seatNumber + " on Screen " + screenId + " not found.");
         }
+        return seat;
     }
 
-    public ArrayList<Seat> getAllSeatsForScreen(String screenId) {
-        return getSeatsBy(s -> s.getScreenId().equals(screenId));
+    public boolean reserveSeat(String screenId, int seatNumber) {
+        Seat seat = findByNumber(screenId, seatNumber);
+        if (!seat.isAvailable()){
+             throw new ValidationException("Seat #" + seat.getSeatNumber() + " is already booked.");
+        }
+        seat.setAvailable(false);
+        return true;
     }
 
-    // ── Finder ───────────────────────────────────────────────────
-
-    public Seat findByNumber(int seatNumber) {
-        for (Seat s : allSeats)
-            if (s.getSeatNumber() == seatNumber) return s;
-        return null;
+    public boolean releaseSeat(String screenId, int seatNumber) {
+        Seat seat = findByNumber(screenId, seatNumber);
+        if (seat.isAvailable())
+            return false;
+        seat.setAvailable(true);
+        return true;
     }
-    
 }

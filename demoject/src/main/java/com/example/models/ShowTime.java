@@ -1,7 +1,8 @@
 package com.example.models;
+import com.example.interface_abstract.Displayable;
 import com.example.interface_abstract.Entity;
 
-public class ShowTime extends Entity  {
+public class ShowTime extends Entity implements Displayable {
     private String dateTime ;
     private Movie movie;
     private Screen screen; 
@@ -35,9 +36,8 @@ public class ShowTime extends Entity  {
 
 
 
+    @Override
     public String displayInfo() {
-        // TODO Auto-generated method stub
-        return null;
-    } 
-    
+        return "ShowTime [ID: " + getId() + ", Time: " + dateTime + ", Movie: " + (movie != null ? movie.getTitle() : "N/A") + ", Screen: " + (screen != null ? screen.getId() : "N/A") + "]";
+    }
 }

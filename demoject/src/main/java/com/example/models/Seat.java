@@ -1,6 +1,9 @@
 package com.example.models;
 
-public class Seat {   // no longer implements Bookable
+import com.example.interface_abstract.Displayable;
+import com.example.interface_abstract.Entity;
+
+public class Seat extends Entity implements Displayable {
 
 
     private String screenId;
@@ -8,10 +11,14 @@ public class Seat {   // no longer implements Bookable
     private boolean isAvailable;
 
     public Seat(String screenId, int seatNumber) {
-    this(screenId, seatNumber, true); // Defaults to 'true'
+        super(screenId + "-" + seatNumber);
+        this.screenId = screenId;
+        this.seatNumber = seatNumber;
+        this.isAvailable = true;
     }
     
     public Seat( String screenId, int seatNumber, boolean isAvailable) {
+        super(screenId + "-" + seatNumber);
         this.screenId    = screenId;
         this.seatNumber  = seatNumber;
         this.isAvailable = isAvailable;
@@ -26,7 +33,13 @@ public class Seat {   // no longer implements Bookable
     public boolean isAvailable()            { return isAvailable; }
     public void setAvailable(boolean avail) { this.isAvailable = avail; }
 
+    @Override
+    public String displayInfo() {
+        return "Seat [Screen: " + screenId + ", Number: " + seatNumber + ", Status: " + (isAvailable ? "AVAILABLE" : "BOOKED") + "]";
+    }
+
+    @Override
     public String toString() {
-        return "Seat #" + seatNumber + " [" + (isAvailable ? "AVAILABLE" : "BOOKED") + "]";
+        return displayInfo();
     }
 }

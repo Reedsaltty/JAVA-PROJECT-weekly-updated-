@@ -1,7 +1,8 @@
 package com.example.models;
+import com.example.interface_abstract.Displayable;
 import com.example.interface_abstract.Entity;
 
-public class Movie extends Entity   {
+public class Movie extends Entity implements Displayable {
     private String title ;
     private int duration ;
     private String genre ;
@@ -43,13 +44,8 @@ public class Movie extends Entity   {
     this.genre = genre;
     }
 
+    @Override
     public String displayInfo() {
-        // TODO Auto-generated method stub
-        return ("[ Movie Id : " + getId() + ", Movie title : " + title + ", Movie duration: " + duration + ", Genre: " + genre + "]");
+        return "Movie [Title: " + title + ", Duration: " + duration + " mins, Genre: " + genre + ", ID: " + getId() + "]";
     }
-    
-    
-       
-    
-
 }

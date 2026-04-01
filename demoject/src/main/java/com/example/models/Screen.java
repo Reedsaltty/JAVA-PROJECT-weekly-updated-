@@ -1,9 +1,9 @@
 package com.example.models;
 
-
+import com.example.interface_abstract.Displayable;
 import com.example.interface_abstract.Entity;
 
-public class Screen extends Entity  {
+public class Screen extends Entity implements Displayable {
 
     private int numberOfSeats;
 
@@ -19,6 +19,11 @@ public class Screen extends Entity  {
 
     public void setNumberOfSeats(int numberOfSeats) {
         this.numberOfSeats = numberOfSeats;
+    }
+
+    @Override
+    public String displayInfo() {
+        return "Screen [ID: " + getId() + ", Seats: " + numberOfSeats + "]";
     }
 
 }

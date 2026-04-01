@@ -3,14 +3,14 @@ package com.example.services;
 import com.example.models.ShowTime;
 import com.example.models.Movie;
 import com.example.models.Screen;
+import com.example.exceptions.ResourceNotFoundException;
+import com.example.exceptions.ValidationException;
+import java.util.List;
 import java.util.ArrayList;
 import java.util.function.Predicate;
 
-public class ShowTimeService {
+public class ShowTimeService extends BaseService<ShowTime> {
 
-    private ArrayList<ShowTime> showTimes = new ArrayList<>();
-
-    // Dependencies
     private MovieService movieService;
     private ScreenService screenService;
 
@@ -19,68 +19,53 @@ public class ShowTimeService {
         this.screenService = screenService;
     }
 
-    // ── Add a showtime ───────────────────────────────────────────
-
-    public void addShowTime(String showTimeId, String dateTime,
-                            String movieId, String screenId) {
-
-        // Step 1 — find movie and screen by ID
+    public void addShowTime(String showTimeId, String dateTime, String movieId, String screenId) {
         Movie movie   = movieService.findMovieById(movieId);
         Screen screen = screenService.findById(screenId);
 
-        if (movie == null)
-            throw new IllegalAccessError("Movie not found: " + movieId);
-        if (screen == null)
-            throw new IllegalAccessError("Screen not found: " + screenId);
+        if (hasConflict(screenId, dateTime)) {
+            throw new ValidationException("Screen " + screenId + " already has a showtime at " + dateTime);
+        }
 
-        // Step 2 — check no overlap on same screen at same time
-        if (hasConflict(screenId, dateTime))
-            throw new IllegalArgumentException(
-                "Screen " + screenId + " already has a showtime at " + dateTime);
-
-        // Step 3 — create and store
         ShowTime showTime = new ShowTime(showTimeId, dateTime, movie, screen);
-        showTimes.add(showTime);
+        add(showTime);
 
         System.out.println("ShowTime added: " + showTime.displayInfo());
     }
 
-    // ── Conflict check ───────────────────────────────────────────
-
     private boolean hasConflict(String screenId, String dateTime) {
-        for (ShowTime st : showTimes)
+        for (ShowTime st : entities)
             if (st.getScreen().getId().equals(screenId)
                     && st.getDateTime().equals(dateTime))
                 return true;
         return false;
     }
 
-    // ── Predicate filter ─────────────────────────────────────────
-
-    public ArrayList<ShowTime> getShowTimesBy(Predicate<ShowTime> condition) {
-        ArrayList<ShowTime> result = new ArrayList<>();
-        for (ShowTime st : showTimes)
+    public List<ShowTime> getShowTimesBy(Predicate<ShowTime> condition) {
+        List<ShowTime> result = new ArrayList<>();
+        for (ShowTime st : entities)
             if (condition.test(st)) result.add(st);
         return result;
     }
 
-    public ArrayList<ShowTime> getShowTimesByMovie(String movieId) {
+    public List<ShowTime> getShowTimesByMovie(String movieId) {
         return getShowTimesBy(st -> st.getMovie().getMovieId().equals(movieId));
     }
 
-    public ArrayList<ShowTime> getShowTimesByScreen(String screenId) {
+    public List<ShowTime> getShowTimesByScreen(String screenId) {
         return getShowTimesBy(st -> st.getScreen().getId().equals(screenId));
     }
 
-    // ── Finder ───────────────────────────────────────────────────
-
+    @Override
     public ShowTime findById(String showTimeId) {
-        for (ShowTime st : showTimes)
-            if (st.getId().equals(showTimeId)) return st;
-        return null;
+        ShowTime st = super.findById(showTimeId);
+        if (st == null) {
+            throw new ResourceNotFoundException("ShowTime not found: " + showTimeId);
+        }
+        return st;
     }
 
-    public ArrayList<ShowTime> getAllShowTimes() {
-        return showTimes;
+    public List<ShowTime> getAllShowTimes() {
+        return getAll();
     }
 }

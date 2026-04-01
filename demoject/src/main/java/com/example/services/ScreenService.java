@@ -1,38 +1,34 @@
 package com.example.services;
-import java.util.ArrayList;
 
 import com.example.models.Screen;
+import com.example.exceptions.ResourceNotFoundException;
+import java.util.List;
 
-// service/ScreenService.java
-public class ScreenService {
+public class ScreenService extends BaseService<Screen> {
 
-    private ArrayList<Screen> screens = new ArrayList<>();
     private SeatService seatService;
 
-    // SeatService is injected through the constructor
-    // This is called "dependency injection" — ScreenService doesn't
-    // create SeatService itself, Main.java passes it in
     public ScreenService(SeatService seatService) {
         this.seatService = seatService;
     }
 
     public void addScreen(Screen screen) {
-        screens.add(screen);
-
-        // Automatically bulk-create all seats for this screen
+        add(screen);
         seatService.initializeSeats(screen);
-
         System.out.println("Screen " + screen.getId()
             + " added with " + screen.getNumberOfSeats() + " seats.");
     }
 
-    public ArrayList<Screen> getAllScreens() {
-        return screens;
+    public List<Screen> getAllScreens() {
+        return getAll();
     }
 
+    @Override
     public Screen findById(String screenId) {
-        for (Screen s : screens)
-            if (s.getId().equals(screenId)) return s;
-        return null;
+        Screen screen = super.findById(screenId);
+        if (screen == null) {
+            throw new ResourceNotFoundException("Screen not found: " + screenId);
+        }
+        return screen;
     }
 }
