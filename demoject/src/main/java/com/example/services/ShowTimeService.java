@@ -15,11 +15,17 @@ public class ShowTimeService extends BaseService<ShowTime> {
     private ScreenService screenService;
 
     public ShowTimeService(MovieService movieService, ScreenService screenService) {
+        if (movieService == null || screenService == null)
+            throw new ValidationException("Services cannot be null");
         this.movieService  = movieService;
         this.screenService = screenService;
     }
 
     public void addShowTime(String showTimeId, String dateTime, String movieId, String screenId) {
+        if (super.findById(showTimeId) != null) {
+            throw new ValidationException("ShowTime already exists: " + showTimeId);
+        }
+
         Movie movie   = movieService.findMovieById(movieId);
         Screen screen = screenService.findById(screenId);
 
