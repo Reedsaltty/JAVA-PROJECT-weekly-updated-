@@ -1,7 +1,7 @@
 package com.example.models;
 import com.example.interface_abstract.Displayable;
 import com.example.interface_abstract.Entity;
-
+import com.example.exceptions.ValidationException;  
 public class Movie extends Entity implements Displayable {
     private String title ;
     private int duration ;
@@ -28,9 +28,9 @@ public class Movie extends Entity implements Displayable {
         return title;
     }
     
-    public void setTitle(String title) throws com.example.exceptions.ValidationException {
+    public void setTitle(String title) throws ValidationException {
         if (title == null || title.trim().isEmpty()) {
-            throw new com.example.exceptions.ValidationException("Movie title cannot be null or empty");
+            throw new ValidationException("Movie title cannot be null or empty");
         }
         this.title = title;
     }
@@ -38,9 +38,9 @@ public class Movie extends Entity implements Displayable {
     public int getDuration(){
         return duration;
     }
-    public void setDuration(int duration) throws com.example.exceptions.ValidationException {
+    public void setDuration(int duration) throws ValidationException {
         if (duration <= 0) {
-            throw new com.example.exceptions.ValidationException("Movie duration must be greater than 0");
+            throw new ValidationException("Movie duration must be greater than 0");
         }
         this.duration = duration;
     }
@@ -48,9 +48,9 @@ public class Movie extends Entity implements Displayable {
     return genre;
     }
 
-    public void setGenre(String genre) throws com.example.exceptions.ValidationException {
+    public void setGenre(String genre) throws ValidationException {
         if (genre == null || genre.trim().isEmpty()) {
-            throw new com.example.exceptions.ValidationException("Movie genre cannot be null or empty");
+            throw new ValidationException("Movie genre cannot be null or empty");
         }
         this.genre = genre;
     }

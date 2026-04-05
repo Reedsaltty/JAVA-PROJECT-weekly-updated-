@@ -2,12 +2,13 @@ package com.example.models;
 
 import com.example.interface_abstract.Displayable;
 import com.example.interface_abstract.Entity;
+import com.example.exceptions.ValidationException;  
 
 public class Screen extends Entity implements Displayable {
 
     private int numberOfSeats;
 
-    public Screen(String screenId, int numberOfSeats) throws com.example.exceptions.ValidationException {
+    public Screen(String screenId, int numberOfSeats) throws ValidationException {
         super(screenId);
         setNumberOfSeats(numberOfSeats);
     }
@@ -17,9 +18,9 @@ public class Screen extends Entity implements Displayable {
         return numberOfSeats;
     }
 
-    public void setNumberOfSeats(int numberOfSeats) throws com.example.exceptions.ValidationException {
+    public void setNumberOfSeats(int numberOfSeats) throws ValidationException {
         if (numberOfSeats <= 0) {
-            throw new com.example.exceptions.ValidationException("Screen must have at least 1 seat");
+            throw new ValidationException("Screen must have at least 1 seat");
         }
         this.numberOfSeats = numberOfSeats;
     }

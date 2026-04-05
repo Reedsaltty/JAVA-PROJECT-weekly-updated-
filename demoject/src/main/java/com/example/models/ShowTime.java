@@ -1,7 +1,7 @@
 package com.example.models;
 import com.example.interface_abstract.Displayable;
 import com.example.interface_abstract.Entity;
-
+import com.example.exceptions.ValidationException;  
 public class ShowTime extends Entity implements Displayable {
     private String dateTime ;
     private Movie movie;
@@ -14,9 +14,9 @@ public class ShowTime extends Entity implements Displayable {
         setScreen(screen);
 
     }
-    public void setScreen(Screen screen ) throws com.example.exceptions.ValidationException {
+    public void setScreen(Screen screen ) throws ValidationException {
         if (screen == null) {
-            throw new com.example.exceptions.ValidationException("ShowTime must have a Screen associated");
+            throw new ValidationException("ShowTime must have a Screen associated");
         }
         this.screen = screen;
     }
@@ -28,9 +28,9 @@ public class ShowTime extends Entity implements Displayable {
         return screen;
     }
 
-    public void setDateTime(String dateTime) throws com.example.exceptions.ValidationException {
+    public void setDateTime(String dateTime) throws ValidationException {
         if (dateTime == null || dateTime.trim().isEmpty()) {
-            throw new com.example.exceptions.ValidationException("ShowTime dateTime cannot be null or empty");
+            throw new ValidationException("ShowTime dateTime cannot be null or empty");
         }
         this.dateTime = dateTime;
     }
@@ -39,9 +39,9 @@ public class ShowTime extends Entity implements Displayable {
         return movie;
     }
 
-    public void setMovie(Movie movie) throws com.example.exceptions.ValidationException {
+    public void setMovie(Movie movie) throws ValidationException {
         if (movie == null) {
-            throw new com.example.exceptions.ValidationException("ShowTime must have a Movie associated");
+            throw new ValidationException("ShowTime must have a Movie associated");
         }
         this.movie = movie;
     }
