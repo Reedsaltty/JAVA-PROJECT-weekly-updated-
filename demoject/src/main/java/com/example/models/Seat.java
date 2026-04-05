@@ -10,25 +10,35 @@ public class Seat extends Entity implements Displayable {
     private int seatNumber;
     private boolean isAvailable;
 
-    public Seat(String screenId, int seatNumber) {
+    public Seat(String screenId, int seatNumber) throws com.example.exceptions.ValidationException {
         super(screenId + "-" + seatNumber);
-        this.screenId = screenId;
-        this.seatNumber = seatNumber;
+        setScreenId(screenId);
+        setSeatNumber(seatNumber);
         this.isAvailable = true;
     }
     
-    public Seat( String screenId, int seatNumber, boolean isAvailable) {
+    public Seat( String screenId, int seatNumber, boolean isAvailable) throws com.example.exceptions.ValidationException {
         super(screenId + "-" + seatNumber);
-        this.screenId    = screenId;
-        this.seatNumber  = seatNumber;
+        setScreenId(screenId);
+        setSeatNumber(seatNumber);
         this.isAvailable = isAvailable;
     }
 
     public String getScreenId()              { return screenId; }
-    public void setScreenId(String screenId) { this.screenId = screenId; }
+    public void setScreenId(String screenId) throws com.example.exceptions.ValidationException {
+        if (screenId == null || screenId.trim().isEmpty()) {
+            throw new com.example.exceptions.ValidationException("Seat screenId cannot be null or empty");
+        }
+        this.screenId = screenId;
+    }
 
     public int getSeatNumber()              { return seatNumber; }
-    public void setSeatNumber(int n)        { this.seatNumber = n; }
+    public void setSeatNumber(int n) throws com.example.exceptions.ValidationException {
+        if (n <= 0) {
+            throw new com.example.exceptions.ValidationException("Seat number must be greater than 0");
+        }
+        this.seatNumber = n;
+    }
 
     public boolean isAvailable()            { return isAvailable; }
     public void setAvailable(boolean avail) { this.isAvailable = avail; }
@@ -38,7 +48,7 @@ public class Seat extends Entity implements Displayable {
         return "Seat [Screen: " + screenId + ", Number: " + seatNumber + ", Status: " + (isAvailable ? "AVAILABLE" : "BOOKED") + "]";
     }
 
-    @Override
+
     public String toString() {
         return displayInfo();
     }

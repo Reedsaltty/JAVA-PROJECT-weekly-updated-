@@ -14,7 +14,10 @@ public class ShowTime extends Entity implements Displayable {
         setScreen(screen);
 
     }
-    public void setScreen(Screen screen ){
+    public void setScreen(Screen screen ) throws com.example.exceptions.ValidationException {
+        if (screen == null) {
+            throw new com.example.exceptions.ValidationException("ShowTime must have a Screen associated");
+        }
         this.screen = screen;
     }
 
@@ -25,7 +28,10 @@ public class ShowTime extends Entity implements Displayable {
         return screen;
     }
 
-    public void setDateTime(String dateTime) {
+    public void setDateTime(String dateTime) throws com.example.exceptions.ValidationException {
+        if (dateTime == null || dateTime.trim().isEmpty()) {
+            throw new com.example.exceptions.ValidationException("ShowTime dateTime cannot be null or empty");
+        }
         this.dateTime = dateTime;
     }
 
@@ -33,13 +39,13 @@ public class ShowTime extends Entity implements Displayable {
         return movie;
     }
 
-    public void setMovie(Movie movie) {
+    public void setMovie(Movie movie) throws com.example.exceptions.ValidationException {
+        if (movie == null) {
+            throw new com.example.exceptions.ValidationException("ShowTime must have a Movie associated");
+        }
         this.movie = movie;
     }
     
-
-
-
     @Override
     public String displayInfo() {
         return "ShowTime [ID: " + getId() + ", Time: " + dateTime + ", Movie: " + (movie != null ? movie.getTitle() : "N/A") + ", Screen: " + (screen != null ? screen.getId() : "N/A") + "]";

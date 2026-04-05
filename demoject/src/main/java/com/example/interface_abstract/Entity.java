@@ -11,9 +11,10 @@ public abstract class Entity {
         return id;
     }
     
-    public void setId(String id) {
+    public void setId(String id) throws com.example.exceptions.ValidationException {
+        if (id == null || id.trim().isEmpty()) {
+            throw new com.example.exceptions.ValidationException("ID cannot be null or empty");
+        }
         this.id = id;
     }
-
-    
 }

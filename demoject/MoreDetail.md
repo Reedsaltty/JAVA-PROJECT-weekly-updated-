@@ -33,3 +33,30 @@ movieService.addMovie(movie);
 
 // Even though 'item' is a Movie, you are treating it as a 'Displayable'
 System.out.println(item.displayInfo()); 
+
+
+
+
+
+
+// New Behavior Interface
+public interface Priceable {
+    double getPrice(double basePrice);
+}
+
+// Specialized Object Type
+public class VipSeat extends Seat implements Priceable {
+    public VipSeat(String screenId, int seatNumber) {
+        super(screenId, seatNumber);
+    }
+
+    @Override
+    public double getPrice(double basePrice) {
+        return basePrice * 1.5; // VIP behavior: 50% more expensive
+    }
+
+    @Override
+    public String displayInfo() {
+        return "✨ VIP " + super.displayInfo();
+    }
+}
