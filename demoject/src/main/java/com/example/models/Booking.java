@@ -7,12 +7,12 @@ import com.example.interface_abstract.Entity;
 public class Booking extends Entity implements Displayable {
 
     private String seatId;          
-    private String showTimeId;  
+    private ShowTime showTime;  
 
-    public Booking(String bookingId, String seatId, String showTimeId) {
+    public Booking(String bookingId, String seatId, ShowTime showTime) {
         super(bookingId);
-        this.seatId     = seatId;
-        this.showTimeId = showTimeId;
+        this.seatId   = seatId;
+        this.showTime = showTime;
     }
     
 
@@ -20,12 +20,12 @@ public class Booking extends Entity implements Displayable {
         return seatId;
     }
 
-    public String getShowTime() {
-        return showTimeId;
+    public ShowTime getShowTime() {
+        return showTime;
     }
 
     @Override
     public String displayInfo() {
-        return "Booking [ID: " + getId() + ", Showtime: " + showTimeId + ", Seat: " + seatId + "]";
+        return "Booking [ID: " + getId() + ", Showtime: " + (showTime != null ? showTime.getDateTime() : "N/A") + ", Seat: " + seatId + "]";
     }
 }

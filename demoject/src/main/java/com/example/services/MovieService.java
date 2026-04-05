@@ -20,8 +20,22 @@ public class MovieService extends BaseService<Movie> {
         addMovie(movie);
     }
 
+    public void addMovie(String movieId, String title, int duration) {
+        Movie movie = new Movie(movieId, title, duration);
+        addMovie(movie);
+    }
+
     public List<Movie> getAllMovies() {
         return getAll();
+    }
+
+    public String getAllMoviesFormatted() {
+        if (getAll().isEmpty()) return "No movies available.";
+        StringBuilder sb = new StringBuilder();
+        for (Movie movie : getAll()) {
+            sb.append(movie.displayInfo()).append("\n");
+        }
+        return sb.toString();
     }
     
     public Movie findMovieById(String movieId){
@@ -33,15 +47,15 @@ public class MovieService extends BaseService<Movie> {
     }
 
 
-    public void updateMovie(String movieid, String title, int duration, String genre) {
-        Movie movieToUpdate = findMovieById(movieid);
+    public void updateMovie(String movieId, String title, int duration, String genre) {
+        Movie movieToUpdate = findMovieById(movieId);
         movieToUpdate.setTitle(title);
         movieToUpdate.setDuration(duration);
         movieToUpdate.setGenre(genre);
     }
 
     public void deleteMovie(String movieId) {
-        findMovieById(movieId); // throws ResourceNotFoundException if not found
+        findMovieById(movieId); 
         remove(movieId);
     }
 

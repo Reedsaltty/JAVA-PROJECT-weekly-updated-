@@ -6,13 +6,16 @@ public class ShowTime extends Entity implements Displayable {
     private String dateTime ;
     private Movie movie;
     private Screen screen; 
-
+ 
     public ShowTime(String showTimeId, String dateTime, Movie movie, Screen screen ){
         super(showTimeId);
         setDateTime(dateTime);
         setMovie(movie);
-        this.screen = screen ;
+        setScreen(screen);
 
+    }
+    public void setScreen(Screen screen ){
+        this.screen = screen;
     }
 
     public String getDateTime() {
@@ -33,6 +36,7 @@ public class ShowTime extends Entity implements Displayable {
     public void setMovie(Movie movie) {
         this.movie = movie;
     }
+    
 
 
 
