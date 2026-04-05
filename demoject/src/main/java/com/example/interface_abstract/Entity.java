@@ -3,8 +3,8 @@ package com.example.interface_abstract;
 public abstract class Entity {
     protected String id;
     
-    public Entity(String seatId) {
-        setId(seatId);
+    public Entity(String Id) {
+        setId(Id);
     }
     
     public String getId() {
