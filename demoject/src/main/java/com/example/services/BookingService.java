@@ -1,6 +1,5 @@
 package com.example.services;
 
-import java.util.List;
 import com.example.models.Booking;
 import com.example.models.Seat;
 import com.example.models.ShowTime;
@@ -46,7 +45,7 @@ public class BookingService extends BaseService<Booking> {
         }
 
         seatService.reserveSeat(screenId, seatNumber);
-        Booking book = new Booking(bookingId, screenId + "-" + seatNumber, showTimeId);
+        Booking book = new Booking(bookingId, screenId + "-" + seatNumber, showTime);
         add(book);
         
         return book;

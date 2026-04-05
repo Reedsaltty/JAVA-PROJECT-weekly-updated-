@@ -6,10 +6,12 @@ public class Movie extends Entity implements Displayable {
     private String title ;
     private int duration ;
     private String genre ;
-    
-
+        
     public Movie(String id, String title, int duration) {
-    this(id, title, duration, "Unknown"); // Default genre
+        super(id);
+        setTitle(title);
+        setDuration(duration);
+        setGenre("Unknown");
     }
     
     public Movie(String movieId, String title , int duration, String genre){
@@ -43,9 +45,8 @@ public class Movie extends Entity implements Displayable {
     public void setGenre(String genre) {
     this.genre = genre;
     }
-
     @Override
     public String displayInfo() {
-        return "Movie [Title: " + title + ", Duration: " + duration + " mins, Genre: " + genre + ", ID: " + getId() + "]";
+        return "Movie [Title: " + getTitle() + ", Duration: " + getDuration() + " mins, Genre: " + getGenre() + ", ID: " + getId() + "]";
     }
 }
