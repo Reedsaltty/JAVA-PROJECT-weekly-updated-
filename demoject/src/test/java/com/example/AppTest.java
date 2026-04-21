@@ -16,8 +16,7 @@ import java.util.List;
  * These tests verify the end-to-end functionality of movie management,
  * screen initialization, showtime scheduling, and the booking process.
  */
-public class AppTest 
-{
+public class AppTest {
     private MovieService movieService;
     private ScreenService screenService;
     private ShowTimeService showTimeService;
@@ -40,7 +39,8 @@ public class AppTest
     // --- Movie Management Tests ---
 
     /**
-     * Verifies that a movie can be added with all required fields (ID, Title, Duration, Genre).
+     * Verifies that a movie can be added with all required fields (ID, Title,
+     * Duration, Genre).
      */
     @Test
     public void testAddMovieFullDetails() {
@@ -51,7 +51,7 @@ public class AppTest
     }
 
     /**
-     * Verifies the overloaded constructor: adding a movie without a genre 
+     * Verifies the overloaded constructor: adding a movie without a genre
      * should automatically default it to "Unknown".
      */
     @Test
@@ -73,7 +73,7 @@ public class AppTest
     // --- Screen Management Tests ---
 
     /**
-     * Verifies that when a screen is added, the SeatService correctly 
+     * Verifies that when a screen is added, the SeatService correctly
      * initializes all associated seats for that screen.
      */
     @Test
@@ -105,7 +105,7 @@ public class AppTest
         movieService.addMovie(new Movie("MOV-001", "Inception", 148));
         screenService.addScreen(new Screen("SCR-101", 100));
         showTimeService.addShowTime("ST-101", "2026-04-01 20:00", "MOV-001", "SCR-101");
-        
+
         // This should throw a ValidationException due to overlapping time/screen
         showTimeService.addShowTime("ST-CONFLICT", "2026-04-01 20:00", "MOV-001", "SCR-101");
     }
@@ -120,7 +120,7 @@ public class AppTest
         movieService.addMovie(new Movie("MOV-001", "Inception", 148));
         screenService.addScreen(new Screen("SCR-101", 100));
         showTimeService.addShowTime("ST-101", "2026-04-01 20:00", "MOV-001", "SCR-101");
-        
+
         Booking b = bookingService.createBooking("BK-101", "ST-101", 1);
         assertNotNull("Booking confirmation should not be null", b);
         assertEquals("Seat ID should be formatted correctly (Screen-SeatNumber)", "SCR-101-1", b.getSeatId());
@@ -134,14 +134,14 @@ public class AppTest
         movieService.addMovie(new Movie("MOV-001", "Inception", 148));
         screenService.addScreen(new Screen("SCR-101", 100));
         showTimeService.addShowTime("ST-101", "2026-04-01 20:00", "MOV-001", "SCR-101");
-        
+
         bookingService.createBooking("BK-101", "ST-101", 1);
         // This should fail because 'BK-101' is already used
         bookingService.createBooking("BK-101", "ST-101", 2);
     }
 
     /**
-     * Verifies that the system prevents booking a seat that has already 
+     * Verifies that the system prevents booking a seat that has already
      * been reserved for that specific show.
      */
     @Test(expected = ValidationException.class)
@@ -149,17 +149,17 @@ public class AppTest
         movieService.addMovie(new Movie("MOV-001", "Inception", 148));
         screenService.addScreen(new Screen("SCR-101", 100));
         showTimeService.addShowTime("ST-101", "2026-04-01 20:00", "MOV-001", "SCR-101");
-        
+
         bookingService.createBooking("BK-1", "ST-101", 1);
         // This should fail because Seat 1 is already taken
-        bookingService.createBooking("BK-2", "ST-101", 1); 
+        bookingService.createBooking("BK-2", "ST-101", 1);
     }
 
     // --- Advanced Logic: Multi-Screen Isolation ---
 
     /**
      * CRITICAL TEST: Verifies that seat availability is scoped to the screen.
-     * Booking Seat 1 on Screen A should NOT affect the availability of 
+     * Booking Seat 1 on Screen A should NOT affect the availability of
      * Seat 1 on Screen B.
      */
     @Test
@@ -172,7 +172,7 @@ public class AppTest
 
         // Book Seat 1 on Screen 101
         bookingService.createBooking("BK-1", "ST-101", 1);
-        
+
         // Seat 1 on Screen 102 should still be AVAILABLE and safe to book
         Booking b2 = bookingService.createBooking("BK-2", "ST-102", 1);
         assertNotNull("Booking for Screen 102 should succeed", b2);

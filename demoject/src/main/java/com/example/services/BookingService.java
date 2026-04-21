@@ -25,6 +25,13 @@ public class BookingService extends BaseService<Booking> {
         return booking;
     }
 
+
+    public void displayAllBookings(){
+        for(Booking booking : getAll()){
+            System.out.println(booking.displayInfo());
+        }
+    }
+
     public String getBookingDetails(String bookingId) {
         Booking booking = findByBookingId(bookingId);
         return booking.displayInfo();
@@ -32,8 +39,8 @@ public class BookingService extends BaseService<Booking> {
 
     public Booking createBooking(String bookingId, String showTimeId, int seatNumber) {
         ShowTime showTime = showTimeService.findById(showTimeId);
-        
-        if(findById(bookingId) != null){
+
+        if (findById(bookingId) != null) {
             throw new ValidationException("Booking already exists: " + bookingId);
         }
 
@@ -47,7 +54,7 @@ public class BookingService extends BaseService<Booking> {
         seatService.reserveSeat(screenId, seatNumber);
         Booking book = new Booking(bookingId, screenId + "-" + seatNumber, showTime);
         add(book);
-        
+
         return book;
     }
 }

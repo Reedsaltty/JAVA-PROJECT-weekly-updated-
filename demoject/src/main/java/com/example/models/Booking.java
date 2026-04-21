@@ -2,13 +2,12 @@ package com.example.models;
 
 import com.example.interface_abstract.Displayable;
 import com.example.interface_abstract.Entity;
-import com.example.exceptions.ValidationException;  
-
+import com.example.exceptions.ValidationException;
 
 public class Booking extends Entity implements Displayable {
 
-    private String seatId;          
-    private ShowTime showTime;  
+    private String seatId;
+    private ShowTime showTime;
 
     public Booking(String bookingId, String seatId, ShowTime showTime) throws ValidationException {
         super(bookingId);
@@ -18,10 +17,9 @@ public class Booking extends Entity implements Displayable {
         if (showTime == null) {
             throw new ValidationException("Booking must have a ShowTime associated");
         }
-        this.seatId   = seatId;
+        this.seatId = seatId;
         this.showTime = showTime;
     }
-    
 
     public String getSeatId() {
         return seatId;
@@ -33,6 +31,7 @@ public class Booking extends Entity implements Displayable {
 
     @Override
     public String displayInfo() {
-        return "Booking [ID: " + getId() + ", Showtime: " + (showTime != null ? showTime.getDateTime() : "N/A") + ", Seat: " + seatId + "]";
+        return "Booking [ID: " + getId() + ", Showtime: " + (showTime != null ? showTime.getDateTime() : "N/A")
+                + ", Seat: " + seatId + "]";
     }
 }

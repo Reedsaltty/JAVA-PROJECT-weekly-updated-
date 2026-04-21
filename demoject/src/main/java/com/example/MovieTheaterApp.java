@@ -3,7 +3,6 @@ package com.example;
 import com.example.models.Booking;
 import com.example.models.Movie;
 import com.example.models.Screen;
-import com.example.models.Seat;
 import com.example.services.BookingService;
 import com.example.services.MovieService;
 import com.example.services.ScreenService;
@@ -11,191 +10,194 @@ import com.example.services.SeatService;
 import com.example.services.ShowTimeService;
 import com.example.exceptions.ResourceNotFoundException;
 import com.example.exceptions.ValidationException;
+import java.util.Scanner;
 
-public class MovieTheaterApp 
-{
-    // Helper to print a section header
-    private static void section(String title) {
-        System.out.println("\n========================================");
-        System.out.println("  " + title);
-        System.out.println("========================================");
-    }
+public class MovieTheaterApp {
 
-    // Helper to print PASS / FAIL result
-    private static void expect(String scenario, Runnable action, boolean shouldFail) {
-        System.out.print("[TEST] " + scenario + " --> ");
-        try {
-            action.run();
-            if (shouldFail) {
-                System.out.println("FAIL (expected exception but none was thrown)");
-            } else {
-                System.out.println("PASS");
-            }
-        } catch (ValidationException | ResourceNotFoundException e) {
-            if (shouldFail) {
-                System.out.println("PASS (caught: " + e.getClass().getSimpleName() + ": " + e.getMessage() + ")");
-            } else {
-                System.out.println("FAIL (unexpected: " + e.getClass().getSimpleName() + ": " + e.getMessage() + ")");
-            }
+    // ANSI Color Constants (Makes the demo pop!)
+    public static final String RESET = "\u001B[0m";
+    public static final String BOLD = "\u001B[1m";
+    public static final String GREEN = "\u001B[32m";
+    public static final String RED = "\u001B[31m";
+    public static final String CYAN = "\u001B[36m";
+    public static final String YELLOW = "\u001B[33m";
+
+    public static void main(String[] args) {
+        try (Scanner scanner = new Scanner(System.in)) {
+            runProfessionalDemo(scanner);
+            System.out.println("\n" + GREEN + "✓ Demo completed successfully!" + RESET);
+        } catch (Exception e) {
+            System.err.println("Demo Error: " + e.getMessage());
         }
     }
 
-    public static void main(String[] args) {
-
-        SeatService     seatService     = new SeatService();
-        MovieService    movieService    = new MovieService();
-        ScreenService   screenService   = new ScreenService(seatService);
+    private static void runProfessionalDemo(Scanner scanner) {
+        // Initialize services
+        SeatService seatService = new SeatService();
+        MovieService movieService = new MovieService();
+        ScreenService screenService = new ScreenService(seatService);
         ShowTimeService showTimeService = new ShowTimeService(movieService, screenService);
-        BookingService  bookingService  = new BookingService(seatService, showTimeService);
+        BookingService bookingService = new BookingService(seatService, showTimeService);
 
-        // ─────────────────────────────────────────────
-        // 1. MOVIE EXCEPTIONS
-        // ─────────────────────────────────────────────
-        section("1. MOVIE — ValidationException (duplicate ID)");
+        printHeader("🎬 CINEBOOK DEMO: PROFESSIONAL THEATER BOOKING");
+        pause(scanner, "Start by explaining that this is a robust backend built in Java with full data validation.");
 
-        expect("Add new movie (should PASS)",
-            () -> movieService.addMovie(new Movie("MOV001", "Avengers: Endgame", 181, "Action")),
-            false);
 
-        expect("Add duplicate movie ID (should FAIL)",
-            () -> movieService.addMovie(new Movie("MOV001", "Avengers: Endgame", 181, "Action")),
-            true);
 
-        section("2. MOVIE — ResourceNotFoundException (not found)");
 
-        expect("Find existing movie (should PASS)",
-            () -> movieService.findMovieById("MOV001"),
-            false);
+        // ---------------------------------------------------------
+        // PART 1: DATA INTEGRITY (THE INPUT GUARD)
+        // ---------------------------------------------------------
+        printSection("1. DATA INTEGRITY (The Input Guard)");
+        System.out.println(CYAN + "[SPEAKER] 'Our system ensures that no bad data can even enter memory...'" + RESET);
 
-        expect("Find non-existent movie (should FAIL)",
-            () -> movieService.findMovieById("GHOST"),
-            true);
+        try {
+            System.out.println("-> Let's try to add a movie with -10 minutes duration...");
+            new Movie("M1", "Broken Movie", -10, "Comedy");
+        } catch (ValidationException e) {
+            System.out.println(RED + "BLOCK REJECTED: " + e.getMessage() + RESET);
+        }
+        pause(scanner, "Notice how the system rejects 'bad data' before it even enters memory. This is Constructor-Level Validation.");
 
-        section("3. MOVIE — ResourceNotFoundException (delete non-existent)");
+        // ---------------------------------------------------------
+        // PART 2: SERVICE MANAGEMENT (DUPLICATE IDs & NOT FOUND)
+        // ---------------------------------------------------------
+        printSection("2. SERVICE MANAGEMENT (Data Integrity)");
+        System.out.println(CYAN + "[SPEAKER] 'Our services protect against duplicate records and handle missing resources...'" + RESET);
+        
+        try {
+            movieService.addMovie(new Movie("MOV01", "Inception", 148, "Sci-Fi"));
+            System.out.println(GREEN + "✓ Movie 'Inception' Added (MOV01)" + RESET);
+            
+            System.out.println("-> Attempting to add ANOTHER movie with ID 'MOV01'...");
+            movieService.addMovie(new Movie("MOV01", "The Matrix", 136, "Action"));
+        } catch (ValidationException e) {
+            System.out.println(RED + "BLOCK DETECTED: " + e.getMessage() + RESET);
+        }
 
-        expect("Delete existing movie (should PASS)",
-            () -> {
-                movieService.addMovie(new Movie("MOV999", "Temp Movie", 90, "Drama"));
-                movieService.deleteMovie("MOV999");
-            },
-            false);
+        try {
+            System.out.println("\n-> Looking for a non-existent Movie with ID 'GHOST'...");
+            movieService.findMovieById("GHOST");
+        } catch (ResourceNotFoundException e) {
+            System.out.println(YELLOW + "HANDLED: " + e.getMessage() + RESET);
+        }
+        pause(scanner, "Explain how custom exceptions like 'ResourceNotFound' make the system more predictable and professional.");
 
-        expect("Delete non-existent movie (should FAIL)",
-            () -> movieService.deleteMovie("NO-SUCH-MOVIE"),
-            true);
 
-        // ─────────────────────────────────────────────
-        // 2. SCREEN EXCEPTIONS
-        // ─────────────────────────────────────────────
-        section("4. SCREEN — ValidationException (duplicate ID)");
 
-        expect("Add new screen (should PASS)",
-            () -> screenService.addScreen(new Screen("SCR001", 10)),
-            false);
 
-        expect("Add duplicate screen (should FAIL)",
-            () -> screenService.addScreen(new Screen("SCR001", 10)),
-            true);
 
-        section("5. SCREEN — ValidationException (null SeatService)");
+        // ---------------------------------------------------------
+        // PART 3: SCHEDULING (Conflict Detection)
+        // ---------------------------------------------------------
+        printSection("3. SCHEDULING (Conflict Detection)");
+        try {
+            // Setup additional movie
+            movieService.addMovie(new Movie("MOV02", "Interstellar", 169, "Sci-Fi"));
+            screenService.addScreen(new Screen("SCR01", 10));
+            
+            System.out.println(GREEN + "✓ Screen 'SCR01' (10 seats) Registered" + RESET);
+            
+            System.out.println("\n-> Scheduling 'Inception' (MOV01) in SCR01 at 19:00...");
+            showTimeService.addShowTime("ST01", "2026-10-10 19:00", "MOV01", "SCR01");
+            System.out.println(BOLD + "SHOWTIME ST01 CREATED!" + RESET);
+            
+            pause(scanner, "Now, attempt to schedule 'Interstellar' (MOV02) in the SAME screen at the SAME time...");
+            
+            System.out.println("-> Attempting to double-book Screen SCR01 at 19:00...");
+            showTimeService.addShowTime("ST02", "2026-10-10 19:00", "MOV02", "SCR01");
+        } catch (Exception e) {
+            System.out.println(RED + "BLOCK DETECTED: " + e.getMessage() + RESET);
+        }
+        pause(scanner, "Explain that the 'ShowTimeService' manages complex resource lookups to prevent business errors.");
 
-        expect("Create ScreenService with null SeatService (should FAIL)",
-            () -> new ScreenService(null),
-            true);
 
-        // ─────────────────────────────────────────────
-        // 3. SHOWTIME EXCEPTIONS
-        // ─────────────────────────────────────────────
-        section("6. SHOWTIME — ValidationException (null services)");
 
-        expect("Create ShowTimeService with null movieService (should FAIL)",
-            () -> new ShowTimeService(null, screenService),
-            true);
 
-        expect("Create ShowTimeService with null screenService (should FAIL)",
-            () -> new ShowTimeService(movieService, null),
-            true);
+        
+        // ---------------------------------------------------------
+        // PART 4: THE BOOKING JOURNEY (REAL-TIME AVAILABILITY)
+        // ---------------------------------------------------------
+        printSection("4. BOOKING JOURNEY (Real-time Availability)");
+        try {
+            System.out.println("-> Customer A is booking ST01 (Interstellar), Seat 5...");
+            Booking b = bookingService.createBooking("B001", "ST01", 5);
+            System.out.println(GREEN + "✓ BOOKING SUCCESS: " + b.displayInfo() + RESET);
 
-        section("7. SHOWTIME — ValidationException (duplicate showtime ID)");
+            pause(scanner, "Now, show what happens when Customer B tries to book the SAME seat...");
 
-        expect("Add new showtime (should PASS)",
-            () -> showTimeService.addShowTime("ST001", "2026-04-10 19:00", "MOV001", "SCR001"),
-            false);
+            System.out.println("-> Customer B attempting to book Seat 5 again...");
+            bookingService.createBooking("B002", "ST01", 5);
+        } catch (Exception e) {
+            System.out.println(RED + "BLOCK DETECTED: " + e.getMessage() + RESET);
+        }
+        pause(scanner, "Final point on booking: Concurrent users are protected from double-booking.");
 
-        expect("Add duplicate showtime ID (should FAIL)",
-            () -> showTimeService.addShowTime("ST001", "2026-04-10 21:00", "MOV001", "SCR001"),
-            true);
 
-        section("8. SHOWTIME — ResourceNotFoundException (movie/screen not found)");
 
-        expect("Add showtime with non-existent movie (should FAIL)",
-            () -> showTimeService.addShowTime("ST002", "2026-04-11 19:00", "GHOST-MOV", "SCR001"),
-            true);
 
-        expect("Add showtime with non-existent screen (should FAIL)",
-            () -> showTimeService.addShowTime("ST002", "2026-04-11 19:00", "MOV001", "GHOST-SCR"),
-            true);
+        // ---------------------------------------------------------
+        // PART 5: THE CORE ENGINE (SEARCH & RETRIEVAL)
+        // ---------------------------------------------------------
+        printSection("5. SEARCH & RETRIEVAL (The Engine)");
+        System.out.println(CYAN + "[SPEAKER] 'Our system allows fast, validated access to all resources...'" + RESET);
 
-        section("9. SHOWTIME — ValidationException (screen/time conflict)");
+        try {
+            System.out.print("-> Searching for movie with ID 'MOV01'... ");
+            Movie found = movieService.findMovieById("MOV01");
+            System.out.println(GREEN + "FOUND: " + found.getTitle() + RESET);
 
-        screenService.addScreen(new Screen("SCR002", 5));
-        showTimeService.addShowTime("ST002", "2026-04-11 19:00", "MOV001", "SCR002");
+            System.out.print("-> Retrieving screen SCR01 seat capacity... ");
+            Screen s = screenService.findById("SCR01");
+            System.out.println(GREEN + s.getNumberOfSeats() + " Seats" + RESET);
+        } catch (Exception e) {
+            System.out.println(RED + "ERROR during search: " + e.getMessage() + RESET);
+        }
+        pause(scanner, "This modular design allows us to easily find any movie, screen, or booking in milliseconds.");
 
-        expect("Add conflicting showtime (same screen & time) (should FAIL)",
-            () -> showTimeService.addShowTime("ST003", "2026-04-11 19:00", "MOV001", "SCR002"),
-            true);
 
-        // ─────────────────────────────────────────────
-        // 4. BOOKING EXCEPTIONS
-        // ─────────────────────────────────────────────
-        section("10. BOOKING — ValidationException (null services)");
 
-        expect("Create BookingService with null seatService (should FAIL)",
-            () -> new BookingService(null, showTimeService),
-            true);
 
-        expect("Create BookingService with null showTimeService (should FAIL)",
-            () -> new BookingService(seatService, null),
-            true);
+        // ---------------------------------------------------------
+        // PART 6: THE FINAL BROADCAST (THEATER STATUS)
+        // ---------------------------------------------------------
+        printSection("6. SYSTEM SUMMARY (The Dashboard)");
+        System.out.println(BOLD + "Movies Currently Showing:" + RESET);
+        System.out.println(movieService.getAllMoviesFormatted());
+        
+        System.out.println("\n" + BOLD + "Active Showtimes:" + RESET);
+        // Assuming we can list showtimes - let's print the one we made
+        try {
+            System.out.println(showTimeService.findById("ST01").displayInfo());
+        } catch (Exception e) {}
+        
+        pause(scanner, "End by showing how all these modular services come together to provide a full dashboard view.");
 
-        section("11. BOOKING — Happy path (should PASS)");
 
-        expect("Book seat 1 on ST001 (should PASS)",
-            () -> {
-                Booking b = bookingService.createBooking("BK001", "ST001", 1);
-                System.out.print("  Booking created: " + b.displayInfo() + " ");
-            },
-            false);
 
-        section("12. BOOKING — ValidationException (duplicate booking ID)");
+        // ---------------------------------------------------------
+        // CONCLUSION
+        // ---------------------------------------------------------
+        printHeader("🎉 DEMO COMPLETE: SCALABLE, SECURE, PROFESSIONAL.");
+        System.out.println(CYAN + "THANK YOU FOR YOUR ATTENTION!" + RESET);
+    }
 
-        expect("Book with same booking ID 'BK001' again (should FAIL)",
-            () -> bookingService.createBooking("BK001", "ST001", 2),
-            true);
+    // HELPER METHODS FOR FORMATTING
+    private static void printHeader(String text) {
+        System.out.println("\n" + YELLOW + "********************************************************");
+        System.out.println("  " + BOLD + text + RESET);
+        System.out.println(YELLOW + "********************************************************" + RESET);
+    }
 
-        section("13. BOOKING — ValidationException (seat already taken)");
+    private static void printSection(String text) {
+        System.out.println("\n" + BOLD + "--------------------------------------------------------");
+        System.out.println(" " + text);
+        System.out.println("--------------------------------------------------------" + RESET);
+    }
 
-        expect("Book seat 1 again on ST001 (should FAIL)",
-            () -> bookingService.createBooking("BK002", "ST001", 1),
-            true);
-
-        section("14. BOOKING — ResourceNotFoundException (showtime not found)");
-
-        expect("Book with non-existent showtime (should FAIL)",
-            () -> bookingService.createBooking("BK003", "GHOST-ST", 2),
-            true);
-
-        section("15. BOOKING — ResourceNotFoundException (seat not found)");
-
-        expect("Book seat 999 that doesn't exist on screen (should FAIL)",
-            () -> bookingService.createBooking("BK004", "ST001", 999),
-            true);
-
-        // ─────────────────────────────────────────────
-        // SUMMARY
-        // ─────────────────────────────────────────────
-        section("ALL TESTS COMPLETE");
-        System.out.println("  Every PASS line = exception guard is working correctly.");
-        System.out.println("  Every FAIL line = something needs to be fixed.\n");
+    private static void pause(Scanner scanner, String talkPrompt) {
+        System.out.println(BOLD + "\n[SPEAKER TIP]: " + YELLOW + talkPrompt + RESET);
+        System.out.print(CYAN + ">>> Press [ENTER] to continue..." + RESET);
+        scanner.nextLine();
     }
 }
